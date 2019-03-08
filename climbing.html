@@ -56,11 +56,18 @@
 
 		});
 </script>
+
+<style>
+.full-width {
+    width: 100%;
+}
+</style>
+
 </head>
 <body ng-controller="controller">
 	<h1 align="center">Mt. Palace Bouldering League</h1>
-		<table class="mdl-data-table mdl-js-data-table">
-			<form>
+	<form>
+		<table class="mdl-data-table mdl-js-data-table full-width" align="center">
 			<thead>
 				<tr>
 					<th class="mdl-data-table__cell--non-numeric">Route</th>
@@ -86,8 +93,7 @@
 					<th>{{total}}</th>
 	   			</tr>
 	   		</thead>
-	   			</form>
 		</table>
-
+	</form>
 </body>
 </html>
