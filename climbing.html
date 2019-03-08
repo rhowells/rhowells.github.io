@@ -72,7 +72,7 @@
 
 			<tbody>
 	   			<tr ng-repeat="n in climbs() track by $index">
-	   				<td>{{$index+1}}</td>
+	   				<td><h2>{{$index+1}}<h2></td>
 	   				<td>
 	   					<div class="input-field">
 	   						<input type="text" ng-model="form[$index].column1" ng-change="compute($index)">
