@@ -105,28 +105,28 @@
 		<table>
 			<thead>
 				<tr>
-					<th>Route</th>
-					<th>Attempts</th>
-					<th>+Holds</th>
-					<th>Points</th>
+					<th><div class="col s2">Route</div></th>
+					<th><div class="col s5">Attempts</div></th>
+					<th><div class="col s5">+Holds</div></th>
+					<th><div class="col s2">Points</div></th>
 				</tr>
 			</thead>
 
 			<tbody>
 	   			<tr ng-repeat="n in climbs() track by $index">
-	   				<td><h2>{{$index+1}}</h2></td>
-	   				<td ng-init="form[$index].column1 ? form[$index].column1 : form[$index].column1=0">
+	   				<td><div class="col s2"><h2>{{$index+1}}</h2></div></td>
+	   				<td><div class="col s5" ng-init="form[$index].column1 ? form[$index].column1 : form[$index].column1=0">
 	   					<div><h4>{{form[$index].column1}}</h4></div>
 	   					<div><a class="btn-floating btn-large waves-effect waves-light" ng-click="addTry($index)"><i class="material-icons">add</i></a>
-	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeTry($index)"><i class="material-icons">remove</i></a></div>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeTry($index)"><i class="material-icons">remove</i></a></div></div>
 	   				</td>
 
-	   				<td ng-init="form[$index].column2 ? form[$index].column2 : form[$index].column2=0">
+	   				<td><div class="col s5" ng-init="form[$index].column2 ? form[$index].column2 : form[$index].column2=0">
 	   					<div><h4>{{form[$index].column2}}</h4></div>
 	   					<div><a class="btn-floating btn-large waves-effect waves-light" ng-click="addHold($index)"><i class="material-icons">add</i></a>
-	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeHold($index)"><i class="material-icons">remove</i></a></div>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeHold($index)"><i class="material-icons">remove</i></a></div></div>
 	   				</td>
-	   				<td><h4>{{form[$index].total}}</h4></td>
+	   				<td><div class="col s2"><h4>{{form[$index].total}}</h4></div></td>
 	   			</tr>
 	   		</tbody>
 		</table>
