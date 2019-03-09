@@ -94,7 +94,7 @@
 
 </head>
 <body ng-controller="controller">
-   	<nav class="nav-extended teal lighten-2">
+   	<nav class="nav-extended teal lighten-2 center">
    		<div class="nav-wrapper">
      		<p><h1>Bouldering League</h1></a>
    		</div>
@@ -124,7 +124,9 @@
 	   					<a class="btn-floating btn-large" ng-click="addHold($index)"><i class="material-icons">add</i></a>
 	   					<a class="btn-floating btn-large" ng-click="removeHold($index)"><i class="material-icons">remove</i></a></div>
 	   				</td>
-	   				<td><h4>{{form[$index].total}}</h4></td>
+	   				<td> 
+	   					<h4>{{form[$index].total}}</h4></div>
+	   				</td>
 	   			</tr>
 	   		</tbody>
 		</table>
