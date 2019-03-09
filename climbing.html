@@ -114,15 +114,15 @@
 	   			<tr ng-repeat="n in climbs() track by $index">
 	   				<td><h2>{{$index+1}}</h2></div></td>
 	   				<td>
-	   					<div ng-init="form[$index].column1 ? form[$index].column1 : form[$index].column1=0"><h4>{{form[$index].column1}}</h4></div>
-	   					<div><a class="btn-floating btn-large waves-effect waves-light" ng-click="addTry($index)"><i class="material-icons">add</i></a>
-	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeTry($index)"><i class="material-icons">remove</i></a></div>
+	   					<div ng-init="form[$index].column1 ? form[$index].column1 : form[$index].column1=0"><h4>{{form[$index].column1}}</h4>
+	   					<a class="btn-floating btn-large" ng-click="addTry($index)"><i class="material-icons">add</i></a>
+	   					<a class="btn-floating btn-large" ng-click="removeTry($index)"><i class="material-icons">remove</i></a></div>
 	   				</td>
 
 	   				<td>
-	   					<div ng-init="form[$index].column2 ? form[$index].column2 : form[$index].column2=0"><h4>{{form[$index].column2}}</h4></div>
-	   					<div><a class="btn-floating btn-large waves-effect waves-light" ng-click="addHold($index)"><i class="material-icons">add</i></a>
-	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeHold($index)"><i class="material-icons">remove</i></a></div>
+	   					<div ng-init="form[$index].column2 ? form[$index].column2 : form[$index].column2=0"><h4>{{form[$index].column2}}</h4>
+	   					<a class="btn-floating btn-large" ng-click="addHold($index)"><i class="material-icons">add</i></a>
+	   					<a class="btn-floating btn-large" ng-click="removeHold($index)"><i class="material-icons">remove</i></a></div>
 	   				</td>
 	   				<td><h4>{{form[$index].total}}</h4></td>
 	   			</tr>
