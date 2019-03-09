@@ -97,9 +97,10 @@
 <body ng-controller="controller">
    	<nav class="nav-extended teal lighten-2 center">
    		<div class="nav-wrapper">
-     		<p><h1>Bouldering League</h1></a>
+     		<a><h1>Bouldering League</h1></a>
    		</div>
     </nav>
+<main>
 	<form>
 		<table class="centered">
 			<thead>
@@ -110,20 +111,19 @@
 					<th><h4><strong>Points</strong></h4></th>
 				</tr>
 			</thead>
-
 			<tbody>
 	   			<tr ng-repeat="n in climbs() track by $index">
 	   				<td><h2>{{$index+1}}</h2></div></td>
 	   				<td>
 	   					<div ng-init="form[$index].column1 ? form[$index].column1 : form[$index].column1=0"><h3>{{form[$index].column1}}</h3>
-	   					<a class="btn-floating btn-large" ng-click="addTry($index)"><i class="material-icons">add</i></a>
-	   					<a class="btn-floating btn-large" ng-click="removeTry($index)"><i class="material-icons">remove</i></a></div>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="addTry($index)"><i class="material-icons">add</i></a>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeTry($index)"><i class="material-icons">remove</i></a></div>
 	   				</td>
 
 	   				<td>
 	   					<div ng-init="form[$index].column2 ? form[$index].column2 : form[$index].column2=0"><h3>{{form[$index].column2}}</h3>
-	   					<a class="btn-floating btn-large" ng-click="addHold($index)"><i class="material-icons">add</i></a>
-	   					<a class="btn-floating btn-large" ng-click="removeHold($index)"><i class="material-icons">remove</i></a></div>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="addHold($index)"><i class="material-icons">add</i></a>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeHold($index)"><i class="material-icons">remove</i></a></div>
 	   				</td>
 	   				<td> 
 	   					<div ng-init="form[$index].total ? form[$index].total : form[$index].total=0"><h3>{{form[$index].total}}</h3></div>
@@ -134,7 +134,7 @@
 		</div>
 		</div>
 	</form>
-</body>
+</main>
 <footer class="page-footer teal lighten-2">
 	<div class="container">
 		<div class="row">
@@ -142,4 +142,5 @@
 		</div>
 	</div>
 </footer>
+</body>
 </html>
