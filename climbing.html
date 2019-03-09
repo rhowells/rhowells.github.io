@@ -16,7 +16,6 @@
 			};
 			
 			$scope.compute = function($index){
-				//LOGIC FOR 
 				if ($scope.form[$index].column1 == 0) $scope.form[$index].total = 0;
 				if ($scope.form[$index].column1 == 1) $scope.form[$index].total = 50;
 				if ($scope.form[$index].column1 == 2) $scope.form[$index].total = 40;
@@ -36,32 +35,34 @@
 				if ($scope.form[$index].column2 == 2 && $scope.form[$index].column1 == 4) $scope.form[$index].total = 1;
 				if ($scope.form[$index].column2 == 2 && $scope.form[$index].column1 > 4) $scope.form[$index].total = 0;
 				if ($scope.form[$index].column2 > 2) $scope.form[$index].total = 0;
-
-				//Display total at bottom of screen
+				console.log($scope.form)
 				$scope.total = $scope.form.reduce(sum, 0);
-				save();
 			}
 
 			$scope.addTry = function($index){
 				$scope.form[$index].column1++;
 				$scope.compute($index);
+				save();
 			}
 
 			$scope.removeTry = function($index){
 				$scope.form[$index].column1 --;
 				$scope.form[$index].column1 = Math.max($scope.form[$index].column1, 0);
 				$scope.compute($index);
+				save();
 			}
 
 			$scope.addHold = function($index){
 				$scope.form[$index].column2++;
 				$scope.compute($index);
+				save();
 			}
 
 			$scope.removeHold = function($index){
 				$scope.form[$index].column2 --;
 				$scope.form[$index].column2 = Math.max($scope.form[$index].column2, 0);
 				$scope.compute($index);
+				save();
 			}
 
 			function sum(total, value){
@@ -115,7 +116,7 @@
 	   				<td><h2>{{$index+1}}</h2></div></td>
 	   				<td>
 	   					<div ng-init="form[$index].column1 ? form[$index].column1 : form[$index].column1=0"><h3>{{form[$index].column1}}</h3>
-	   					<a class="btn-floating btn-large" ng-click="addTry($index)"><i class="material-icons">add</i>   </a>
+	   					<a class="btn-floating btn-large" ng-click="addTry($index)"><i class="material-icons">add</i></a>
 	   					<a class="btn-floating btn-large" ng-click="removeTry($index)"><i class="material-icons">remove</i></a></div>
 	   				</td>
 
@@ -125,7 +126,7 @@
 	   					<a class="btn-floating btn-large" ng-click="removeHold($index)"><i class="material-icons">remove</i></a></div>
 	   				</td>
 	   				<td> 
-	   					<h3>{{form[$index].total}}</h3></div>
+	   					<div ng-init="form[$index].total ? form[$index].total : form[$index].total=0"><h3>{{form[$index].total}}</h3></div>
 	   				</td>
 	   			</tr>
 	   		</tbody>
