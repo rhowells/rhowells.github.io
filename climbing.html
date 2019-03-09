@@ -1,9 +1,10 @@
 <html ng-app="app">
 <head>
-	<title>Mt. Palace Bouldering League</title>
+	<title>Bouldering League</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.7/angular.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script>
 	angular.module('app', ['ngStorage'])
@@ -16,11 +17,12 @@
 			
 			$scope.compute = function($index){
 				//LOGIC FOR 
+				if ($scope.form[$index].column1 == 0) $scope.form[$index].total = 0;
 				if ($scope.form[$index].column1 == 1) $scope.form[$index].total = 50;
 				if ($scope.form[$index].column1 == 2) $scope.form[$index].total = 40;
 				if ($scope.form[$index].column1 == 3) $scope.form[$index].total = 30;
-				if ($scope.form[$index].column1 == 4) $scope.form[$index].total = 30;
-				if ($scope.form[$index].column1 == 5) $scope.form[$index].total = 20;
+				if ($scope.form[$index].column1 == 4) $scope.form[$index].total = 20;
+				if ($scope.form[$index].column1 == 5) $scope.form[$index].total = 10;
 				if ($scope.form[$index].column1 > 5) $scope.form[$index].total = 10;
 				if ($scope.form[$index].column2 == 1 && $scope.form[$index].column1 == 1) $scope.form[$index].total = 9;
 				if ($scope.form[$index].column2 == 1 && $scope.form[$index].column1 == 2) $scope.form[$index].total = 8;
@@ -40,6 +42,28 @@
 				save();
 			}
 
+			$scope.addTry = function($index){
+				$scope.form[$index].column1++;
+				$scope.compute($index);
+			}
+
+			$scope.removeTry = function($index){
+				$scope.form[$index].column1 --;
+				$scope.form[$index].column1 = Math.max($scope.form[$index].column1, 0);
+				$scope.compute($index);
+			}
+
+			$scope.addHold = function($index){
+				$scope.form[$index].column2++;
+				$scope.compute($index);
+			}
+
+			$scope.removeHold = function($index){
+				$scope.form[$index].column2 --;
+				$scope.form[$index].column2 = Math.max($scope.form[$index].column2, 0);
+				$scope.compute($index);
+			}
+
 			function sum(total, value){
 				return total + value.total;
 			}
@@ -56,15 +80,31 @@
 		});
 </script>
 
+<style type="text/css">
+	body {
+    	display: flex;
+    	min-height: 100vh;
+    	flex-direction: column;
+  	}
+
+  	main {
+    	flex: 1 0 auto;
+  	}
+</style>
+
 </head>
 <body ng-controller="controller">
-	<h1 align="center">Mt. Palace Bouldering League</h1>
+   	<nav>
+   		<div class="nav-wrapper teal lighten-2">
+     		<a href="#" class="brand-logo">Bouldering League</a>
+   		</div>
+    </nav>
 	<form>
 		<table class="centered">
 			<thead>
 				<tr>
 					<th>Route</th>
-					<th>Tries</th>
+					<th>Attempts</th>
 					<th>+Holds</th>
 					<th>Points</th>
 				</tr>
@@ -72,34 +112,31 @@
 
 			<tbody>
 	   			<tr ng-repeat="n in climbs() track by $index">
-	   				<td><h2>{{$index+1}}<h2></td>
-	   				<td>
-	   					<div class="input-field">
-	   						<input type="text" ng-model="form[$index].column1" ng-change="compute($index)">
-	   					</div>
+	   				<td><h2>{{$index+1}}</h2></td>
+	   				<td ng-init="form[$index].column1 ? form[$index].column1 : form[$index].column1=0">
+	   					<div><h4>{{form[$index].column1}}</h4></div>
+	   					<div><a class="btn-floating btn-large waves-effect waves-light" ng-click="addTry($index)"><i class="material-icons">add</i></a>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeTry($index)"><i class="material-icons">remove</i></a></div>
 	   				</td>
 
-	   				<td>
-	   					<div class="input-field">
-	   						<input type="text" ng-model="form[$index].column2" ng-change="compute($index)">
-	   					</div>
+	   				<td ng-init="form[$index].column2 ? form[$index].column2 : form[$index].column2=0">
+	   					<div><h4>{{form[$index].column2}}</h4></div>
+	   					<div><a class="btn-floating btn-large waves-effect waves-light" ng-click="addHold($index)"><i class="material-icons">add</i></a>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeHold($index)"><i class="material-icons">remove</i></a></div>
 	   				</td>
-	   				<td>
-	   					<div class="input-field">
-	   						<input type="text" readonly ng-model="form[$index].total"></td>
-	   					</div>
-	   				</td>
+	   				<td><h4>{{form[$index].total}}</h4></td>
 	   			</tr>
 	   		</tbody>
-	   		<thead>
-	   			<tr>
-	   				<th></th>
-	   				<th></th>
-	   				<th><h2>Score:</h2></th>
-					<th><h2>{{total}}</h2></th>
-	   			</tr>
-	   		</thead>
 		</table>
 	</form>
 </body>
+<footer class="page-footer teal lighten-2">
+	<div class="container">
+		<div class="row">
+			<div class="col l6 s12">
+				<h5 class="white-text right">Score: {{total}}</h5>
+			</div>
+		</div>
+	</div>
+</footer>
 </html>
