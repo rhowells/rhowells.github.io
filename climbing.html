@@ -9,59 +9,59 @@
 <script>
 	angular.module('app', ['ngStorage'])
 		.controller('controller', function($scope, $localStorage, $sessionStorage) {
-			load();
 
-			$scope.climbs = function(){
-     			return new Array(50);
-			};
-			
-			$scope.compute = function($index){
-				if ($scope.form[$index].column1 == 0) $scope.form[$index].total = 0;
-				if ($scope.form[$index].column1 == 1) $scope.form[$index].total = 50;
-				if ($scope.form[$index].column1 == 2) $scope.form[$index].total = 40;
-				if ($scope.form[$index].column1 == 3) $scope.form[$index].total = 30;
-				if ($scope.form[$index].column1 == 4) $scope.form[$index].total = 20;
-				if ($scope.form[$index].column1 == 5) $scope.form[$index].total = 10;
-				if ($scope.form[$index].column1 > 5) $scope.form[$index].total = 10;
-				if ($scope.form[$index].column2 == 1 && $scope.form[$index].column1 == 1) $scope.form[$index].total = 9;
-				if ($scope.form[$index].column2 == 1 && $scope.form[$index].column1 == 2) $scope.form[$index].total = 8;
-				if ($scope.form[$index].column2 == 1 && $scope.form[$index].column1 == 3) $scope.form[$index].total = 7;
-				if ($scope.form[$index].column2 == 1 && $scope.form[$index].column1 == 4) $scope.form[$index].total = 6;
-				if ($scope.form[$index].column2 == 1 && $scope.form[$index].column1 == 5) $scope.form[$index].total = 5;
-				if ($scope.form[$index].column2 == 1 && $scope.form[$index].column1 > 5) $scope.form[$index].total = 5;
-				if ($scope.form[$index].column2 == 2 && $scope.form[$index].column1 == 1) $scope.form[$index].total = 4;
-				if ($scope.form[$index].column2 == 2 && $scope.form[$index].column1 == 2) $scope.form[$index].total = 3;
-				if ($scope.form[$index].column2 == 2 && $scope.form[$index].column1 == 3) $scope.form[$index].total = 2;
-				if ($scope.form[$index].column2 == 2 && $scope.form[$index].column1 == 4) $scope.form[$index].total = 1;
-				if ($scope.form[$index].column2 == 2 && $scope.form[$index].column1 > 4) $scope.form[$index].total = 0;
-				if ($scope.form[$index].column2 > 2) $scope.form[$index].total = 0;
-				console.log($scope.form)
-				$scope.total = $scope.form.reduce(sum, 0);
+			this.$onInit = function () {
+				var climbs = new Array(50).fill(null).map(climb => ({
+					attempts: 0, holds: 0, total: 0
+				}));
+				$scope.climbs = $localStorage.data ? $localStorage.data : climbs;
+				$scope.total = $scope.climbs.reduce(sum, 0);
 			}
 
-			$scope.addTry = function($index){
-				$scope.form[$index].column1++;
-				$scope.compute($index);
+			$scope.compute = function(climb){
+				if (climb.attempts === 0) climb.total = 0;
+				if (climb.attempts === 1) climb.total = 50;
+				if (climb.attempts === 2) climb.total = 40;
+				if (climb.attempts === 3) climb.total = 30;
+				if (climb.attempts === 4) climb.total = 20;
+				if (climb.attempts >= 5) climb.total = 10;
+				if (climb.holds === 1 && climb.attempts === 1) climb.total = 9;
+				if (climb.holds === 1 && climb.attempts === 2) climb.total = 8;
+				if (climb.holds === 1 && climb.attempts === 3) climb.total = 7;
+				if (climb.holds === 1 && climb.attempts === 4) climb.total = 6;
+				if (climb.holds === 1 && climb.attempts >= 5) climb.total = 5;
+				if (climb.holds === 2 && climb.attempts === 1) climb.total = 4;
+				if (climb.holds === 2 && climb.attempts === 2) climb.total = 3;
+				if (climb.holds === 2 && climb.attempts === 3) climb.total = 2;
+				if (climb.holds === 2 && climb.attempts === 4) climb.total = 1;
+				if (climb.holds === 2 && climb.attempts > 4) climb.total = 0;
+				if (climb.holds > 2) climb.total = 0;
+				$scope.total = $scope.climbs.reduce(sum, 0);
+			}
+
+			$scope.addTry = function(climb){
+				climb.attempts ++;
+				$scope.compute(climb);
 				save();
 			}
 
-			$scope.removeTry = function($index){
-				$scope.form[$index].column1 --;
-				$scope.form[$index].column1 = Math.max($scope.form[$index].column1, 0);
-				$scope.compute($index);
+			$scope.removeTry = function(climb){
+				climb.attempts --;
+				climb.attempts = Math.max(climb.attempts, 0);
+				$scope.compute(climb);
 				save();
 			}
 
-			$scope.addHold = function($index){
-				$scope.form[$index].column2++;
-				$scope.compute($index);
+			$scope.addHold = function(climb){
+				climb.holds ++;
+				$scope.compute(climb);
 				save();
 			}
 
-			$scope.removeHold = function($index){
-				$scope.form[$index].column2 --;
-				$scope.form[$index].column2 = Math.max($scope.form[$index].column2, 0);
-				$scope.compute($index);
+			$scope.removeHold = function(climb){
+				climb.holds --;
+				climb.holds = Math.max(climb.holds, 0);
+				$scope.compute(climb);
 				save();
 			}
 
@@ -70,14 +70,8 @@
 			}
 
 			function save(){
-				$localStorage.data = $scope.form;
+				$localStorage.data = $scope.climbs;
 			}
-
-			function load(){
-				$scope.form = $localStorage.data ? $localStorage.data : [];
-				$scope.total = $scope.form.reduce(sum, 0);
-			}
-
 		});
 </script>
 
@@ -115,21 +109,20 @@
 				</tr>
 			</thead>
 			<tbody>
-	   			<tr ng-repeat="n in climbs() track by $index">
+	   			<tr ng-repeat="climb in climbs track by $index">
 	   				<td><h2>{{$index+1}}</h2></div></td>
 	   				<td>
-	   					<div ng-init="form[$index].column1 ? form[$index].column1 : form[$index].column1=0"><h3>{{form[$index].column1}}</h3>
-	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="addTry($index)"><i class="material-icons">add</i></a>
-	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeTry($index)"><i class="material-icons">remove</i></a></div>
+	   					<div><h3>{{climb.attempts}}</h3>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="addTry(climb)"><i class="material-icons">add</i></a>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeTry(climb)"><i class="material-icons">remove</i></a></div>
 	   				</td>
-
 	   				<td>
-	   					<div ng-init="form[$index].column2 ? form[$index].column2 : form[$index].column2=0"><h3>{{form[$index].column2}}</h3>
-	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="addHold($index)"><i class="material-icons">add</i></a>
-	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeHold($index)"><i class="material-icons">remove</i></a></div>
+	   					<div><h3>{{climb.holds}}</h3>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="addHold(climb)"><i class="material-icons">add</i></a>
+	   					<a class="btn-floating btn-large waves-effect waves-light" ng-click="removeHold(climb)"><i class="material-icons">remove</i></a></div>
 	   				</td>
-	   				<td> 
-	   					<div ng-init="form[$index].total ? form[$index].total : form[$index].total=0"><h3>{{form[$index].total}}</h3></div>
+	   				<td>
+	   					<div><h3>{{climb.total}}</h3></div>
 	   				</td>
 	   			</tr>
 	   		</tbody>
